@@ -53,6 +53,7 @@ public class OrderService {
     }
 
     public List<BookOrder> findOrdersBetweenDates(StartEndTimeDAO dao) {
+        orderValidator.dateValidation(dao);
         return orderRepository.findByOrderDateBetween(dao.getStartDate(),dao.getEndDate());
     }
 }

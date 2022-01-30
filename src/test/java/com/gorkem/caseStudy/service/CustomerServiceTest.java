@@ -15,6 +15,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @RunWith(MockitoJUnitRunner.class)
 public class CustomerServiceTest {
 
@@ -34,5 +37,35 @@ public class CustomerServiceTest {
     public void saveCustomerTestSuccessful(){
         Mockito.when(customerRepository.save(Mockito.any())).thenReturn(TestEntityFactory.customer());
         customerService.save(TestDAOFactory.customerDao());
+    }
+
+    @Test
+    public void deleteCustomerTestInvalidId(){
+        expectedEx.expect(IllegalArgumentException.class);
+        Mockito.when(customerRepository.findById(Mockito.any())).thenReturn(Optional.of(TestEntityFactory.customer()));
+        customerService.delete("Invalid id");
+    }
+
+    @Test
+    public void deleteCustomerTestSuccessful(){
+        Mockito.when(customerRepository.findById(Mockito.any())).thenReturn(Optional.of(TestEntityFactory.customer()));
+        customerService.delete(UUID.randomUUID().toString());
+    }
+
+    @Test
+    public void findAllCustomerTestSuccessful(){
+        Mockito.when(customerRepository.findAll()).thenReturn(TestEntityFactory.customerList());
+        customerService.findAllCustomers();
+    }
+    @Test
+    public void findByIdTestSuccessful(){
+        Mockito.when(customerRepository.findById(Mockito.any())).thenReturn(Optional.of(TestEntityFactory.customer()));
+        customerService.findById(UUID.randomUUID());
+    }
+    @Test
+    public void findByIdTestCustomerNotFound(){
+        expectedEx.expect(NullPointerException.class);
+        Mockito.when(customerRepository.findById(Mockito.any())).thenReturn(null);
+        customerService.findById(null);
     }
 }

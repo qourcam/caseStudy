@@ -31,7 +31,6 @@ public class StatisticsController {
         return new ResponseEntity(statisticsService.countOfAllOrders(), HttpStatus.OK);
     }
 
-
     @RequestMapping(value = "/totalPurchasedBookCount", method = RequestMethod.POST)
     @ApiOperation(value = "", notes = "Returns total purchased book count")
     public ResponseEntity getTotalPurchasedBookCount(){

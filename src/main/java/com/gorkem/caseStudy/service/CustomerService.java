@@ -2,6 +2,7 @@ package com.gorkem.caseStudy.service;
 
 import com.gorkem.caseStudy.dao.CustomerDAO;
 import com.gorkem.caseStudy.entities.Customer;
+import com.gorkem.caseStudy.exception.PersonalException;
 import com.gorkem.caseStudy.repository.CustomerRepository;
 import com.gorkem.caseStudy.validation.CustomerValidation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +39,9 @@ public class CustomerService {
     }
 
     public void delete(String id){
-        Optional<Customer> customer=customerRepository.findById(UUID.fromString(id));
-        customerRepository.delete(customer.get());
+        Customer customer = customerRepository.findById(UUID.fromString(id)).orElseThrow(()->
+                new PersonalException("Customer could not be found"));
+        customerRepository.delete(customer);
     }
 
     public List<Customer> findAllCustomers() {
