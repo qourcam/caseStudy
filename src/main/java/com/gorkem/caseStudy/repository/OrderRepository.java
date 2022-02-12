@@ -1,6 +1,8 @@
 package com.gorkem.caseStudy.repository;
 
 import com.gorkem.caseStudy.entities.BookOrder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
@@ -12,7 +14,7 @@ import java.util.UUID;
 
 public interface OrderRepository extends MongoRepository<BookOrder, UUID> {
 
-    List<BookOrder> findByCustomerId(UUID customerId);
+    Page<BookOrder> findByCustomerId(UUID customerId, Pageable pageable);
 
     List<BookOrder> findByOrderDateBetween(Date startDate, Date endDate);
 

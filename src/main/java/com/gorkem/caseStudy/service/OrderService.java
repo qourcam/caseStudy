@@ -8,6 +8,8 @@ import com.gorkem.caseStudy.exception.PersonalException;
 import com.gorkem.caseStudy.repository.OrderRepository;
 import com.gorkem.caseStudy.validation.OrderValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -44,8 +46,9 @@ public class OrderService {
         return orderRepository.count();
     }
 
-    public List<BookOrder> findOrdersOfCustomer(UUID customerId) {
-        return orderRepository.findByCustomerId(customerId);
+    public Page<BookOrder> findOrdersOfCustomer(UUID customerId, Pageable pageable) {
+
+        return orderRepository.findByCustomerId(customerId,pageable);
     }
 
     public BookOrder findById(UUID id) {
