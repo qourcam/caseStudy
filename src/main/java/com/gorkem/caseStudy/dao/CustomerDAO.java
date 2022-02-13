@@ -10,4 +10,5 @@ import javax.validation.constraints.NotNull;
 public class CustomerDAO {
     private String name;
     private String email;
+    private String address;
 }

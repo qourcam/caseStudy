@@ -2,6 +2,7 @@ package com.gorkem.caseStudy.service;
 
 import com.gorkem.caseStudy.dao.BookDAO;
 import com.gorkem.caseStudy.dao.BookStockDAO;
+import com.gorkem.caseStudy.dao.BookNameAuthorDAO;
 import com.gorkem.caseStudy.entities.Book;
 import com.gorkem.caseStudy.exception.PersonalException;
 import com.gorkem.caseStudy.repository.BookRepository;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,9 +27,10 @@ public class BookService {
     }
 
     public Book saveBook(BookDAO bookDAO) {
-        Book book= new Book(bookDAO.getName(),bookDAO.getStock(), bookDAO.getPrice());
+        Book book = new Book(bookDAO.getName(), bookDAO.getAuthor(), bookDAO.getGenre(),
+                bookDAO.getStock(), bookDAO.getPrice());
         bookRepository.save(book);
-       return book;
+        return book;
     }
 
     public ResponseEntity updateStock(BookStockDAO bookStockDAO) {
@@ -46,7 +47,7 @@ public class BookService {
     public boolean reduceBookStock(BookStockDAO bookStockDAO) {
         try {
             Book book = bookRepository.findById(bookStockDAO.getBookId()).get();
-            book.setStock(book.getStock()-bookStockDAO.getStock());
+            book.setStock(book.getStock() - bookStockDAO.getStock());
             bookRepository.save(book);
             return true;
         } catch (Exception e) {
@@ -56,11 +57,24 @@ public class BookService {
     }
 
     public Book findById(UUID id) {
-        return bookRepository.findById(id).orElseThrow(()-> new PersonalException("Book cannot be found"));
+        return bookRepository.findById(id).orElseThrow(() -> new PersonalException("Book cannot be found"));
 
     }
 
-    public List<Book> getAllBooks(){
+    public List<Book> getAllBooks() {
         return (List<Book>) bookRepository.findAll();
+    }
+
+    public int findBooksHasNoStock() {
+        List<Book> list = bookRepository.findBooksHasNoStock(0);
+        return list.size();
+    }
+
+    public List<Book> findByAuthor(String author){
+        return  bookRepository.findByAuthorIgnoreCase(author);
+    }
+
+    public List<BookNameAuthorDAO> findByGenre(String genre){
+        return  bookRepository.getBookNameAndAuthorByGenre(genre);
     }
 }

@@ -1,5 +1,6 @@
 package com.gorkem.caseStudy.entities;
 
+import com.gorkem.caseStudy.EnumBookGenre;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,6 +19,10 @@ public class Book {
     private UUID id;
     @Field(name = "name")
     private String name;
+    @Field(name = "author")
+    private String author;
+    @Field(name="genre")
+    private EnumBookGenre genre;
     @Field(name = "stock")
     private Integer stock;
     @Field(name = "price")
@@ -26,9 +31,11 @@ public class Book {
     public Book() {
     }
 
-    public Book(String name, Integer stock, Double price) {
+    public Book(String name, String author, EnumBookGenre genre, Integer stock, Double price) {
         this.id=UUID.randomUUID();
         this.name = name;
+        this.author = author;
+        this.genre = genre;
         this.stock = stock;
         this.price = price;
     }

@@ -27,10 +27,11 @@ public class Customer {
     @Indexed(unique = true)
     @NotNull(message = "Name cannot be null!")
     private String name;
-
     @Field(name = "email")
     @Indexed(unique = true)
     private String email;
+    @Field(name = "address")
+    private String address;
 
     public Customer() {
     }
